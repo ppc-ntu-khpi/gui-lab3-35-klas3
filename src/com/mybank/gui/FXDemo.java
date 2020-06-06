@@ -34,6 +34,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import com.mybank.data.DataSource;
 
 /**
  *
@@ -216,14 +217,16 @@ public class FXDemo extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Bank.addCustomer("John", "Doe");
-        Bank.getCustomer(0).addAccount(new SavingsAccount(100, 2));
-        Bank.addCustomer("Fox", "Mulder");
-        Bank.getCustomer(1).addAccount(new CheckingAccount(1000, 500));
-        Bank.addCustomer("Dana", "Scully");
-        Bank.getCustomer(2).addAccount(new CheckingAccount(1060));
-
+        try {
+            (new DataSource("data/test.dat")).loadData();
+        } catch(Exception ex) {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Error");
+            // Header Text: null
+            alert.setHeaderText(null);
+            alert.setContentText("Failed to load data, please try again");
+            alert.showAndWait();
+        }
         launch(args);
     }
-
 }
